@@ -5,23 +5,23 @@ load_dotenv()
 
 
 class Account:
-    """ Authenticates, checks balances, places orders. """
+    """ Authenticates and places orders."""
 
     def __init__(self):
         self.auth_client = AuthenticatedClient(os.getenv("api_key"), os.getenv("secret"), os.getenv("passphrase"))
         self.account = self.auth_client.get_accounts()
         self.size = 0.0001
 
-    def buy(self):
+    def buy(self, coin):
         return self.auth_client.place_market_order(
-            'BTC-USD',
+            coin,
             'buy',
             size=self.size
         )
 
-    def sell(self):
+    def sell(self, coin):
         return self.auth_client.place_market_order(
-            'BTC-USD',
+            coin,
             'sell',
             size=self.size
         )

@@ -19,12 +19,12 @@ def run():
             history = History()
             if bull_flag is False and history.sma(50) > history.sma(100):
                 print("Golden Cross, trigger buy")
-                buy = auth_client.buy()
+                buy = auth_client.buy('BTC-USD')
                 print(datetime.now(), buy)
                 bull_flag = True
             if bull_flag is True and history.sma(50) < history.sma(100):
                 print("Death Cross, trigger sell")
-                sell = auth_client.sell()
+                sell = auth_client.sell('BTC-USD')
                 print(datetime.now(), sell)
                 bull_flag = False
             else:
