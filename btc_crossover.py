@@ -16,7 +16,7 @@ def run():
         bull_flag = False
     while True:
         if datetime.now().minute == 0:
-            history = History()
+            history = History('BTC-USD')
             if bull_flag is False and history.sma(50) > history.sma(100):
                 print("Golden Cross, trigger buy")
                 buy = auth_client.buy('BTC-USD')
