@@ -1,11 +1,17 @@
 import time
+import logging
 from datetime import datetime
 from Account import Account
 from History import History
 
 
 def run():
-    print('initiating run()')
+    logging.basicConfig(filename='log.txt',
+                        filemode='a',
+                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                        datefmt='%d-%b-%y %H:%M:%S',
+                        level=logging.DEBUG)
+    logging.info('Initiating Run')
     auth_client = Account()
     history = History('BTC-USD')
     sma50 = history.sma(50)
@@ -18,18 +24,15 @@ def run():
         if datetime.now().minute == 0:
             history = History('BTC-USD')
             if bull_flag is False and history.sma(50) > history.sma(100):
-                print("Golden Cross, trigger buy")
                 buy = auth_client.buy('BTC-USD')
-                print(datetime.now(), buy)
+                logging.info(f'Golden Cross: {buy}')
                 bull_flag = True
             if bull_flag is True and history.sma(50) < history.sma(100):
-                print("Death Cross, trigger sell")
                 sell = auth_client.sell('BTC-USD')
-                print(datetime.now(), sell)
+                logging.info(f'Death Cross: {sell}')
                 bull_flag = False
             else:
-                print(datetime.now())
-                print("No crossover event.")
+                logging.info('No Crossover event')
             time.sleep((60 * 60) - datetime.now().minute * 60 - (datetime.now().microsecond / 1000000))
         else:
             time.sleep((60 * 60) - datetime.now().minute * 60 - (datetime.now().microsecond / 1000000))
